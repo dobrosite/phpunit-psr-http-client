@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset>
+    <arg value="wsp"/>
+    <arg name="colors"/>
+    <arg name="encoding" value="utf-8"/>
+    <rule ref="PSR12"/>
+    <file>src</file>
+    <file>tests</file>
+</ruleset>
