@@ -20,7 +20,7 @@ use Psr\Http\Message\StreamInterface;
  */
 class HttpRequestExpectation
 {
-    private ?Constraint $bodyConstraint;
+    private ?Constraint $bodyConstraint = null;
 
     private array $headersConstraints = [];
 
@@ -72,9 +72,7 @@ class HttpRequestExpectation
     public function headers(array $headers): self
     {
         $this->headersConstraints = array_map(
-            static function ($value) {
-                return $value instanceof Constraint ? $value : new IsEqual($value);
-            },
+            static fn($value) => $value instanceof Constraint ? $value : new IsEqual($value),
             $headers
         );
 
@@ -85,8 +83,6 @@ class HttpRequestExpectation
      * Проверяет запрос на соответствие ожиданиям и возвращает ответ в случае успеха.
      *
      * @param RequestInterface $request Проверяемый запрос HTTP.
-     *
-     * @return ResponseInterface
      *
      * @throws \Throwable
      */
@@ -102,7 +98,7 @@ class HttpRequestExpectation
             );
             Assert::assertThat($request->getHeaderLine($header), $constraint);
         }
-        if (isset($this->bodyConstraint)) {
+        if ($this->bodyConstraint instanceof Constraint) {
             Assert::assertThat((string) $request->getBody(), $this->bodyConstraint);
         }
 
@@ -121,9 +117,7 @@ class HttpRequestExpectation
         if (is_array($body)) {
             $body = self::jsonEncode($body);
         }
-        $this->requestResult = static function () use ($statusCode, $headers, $body) {
-            return new Response($statusCode, $headers, $body);
-        };
+        $this->requestResult = static fn() => new Response($statusCode, $headers, $body);
 
         return $this;
     }

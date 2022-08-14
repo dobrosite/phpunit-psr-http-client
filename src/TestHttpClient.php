@@ -27,20 +27,18 @@ class TestHttpClient implements ClientInterface
      */
     public function assertAllRequestsSent(): void
     {
-        if (count($this->syncExpectations) > 0) {
+        if ($this->syncExpectations !== []) {
             throw new AssertionFailedError(
                 sprintf(
                     "Не были выполнены запросы:\n\t%s",
                     implode(
                         "\n\t",
                         array_map(
-                            static function (HttpRequestExpectation $expectation): string {
-                                return sprintf(
-                                    'method %s, URI %s.',
-                                    $expectation->getMethodConstraint()->toString(),
-                                    $expectation->getUriConstraint()->toString()
-                                );
-                            },
+                            static fn(HttpRequestExpectation $expectation): string => sprintf(
+                                'method %s, URI %s.',
+                                $expectation->getMethodConstraint()->toString(),
+                                $expectation->getUriConstraint()->toString()
+                            ),
                             $this->syncExpectations
                         )
                     )
@@ -66,7 +64,7 @@ class TestHttpClient implements ClientInterface
     {
         $expectation = array_shift($this->syncExpectations);
 
-        if ($expectation === null) {
+        if (!$expectation instanceof HttpRequestExpectation) {
             throw new AssertionFailedError(
                 sprintf(
                     'Неожиданный синхронный запрос "%s %s".',
