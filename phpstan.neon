@@ -9,3 +9,7 @@ parameters:
     paths:
         - src
         - tests
+    ignoreErrors:
+        -
+            path: 'tests/Unit/HttpRequestExpectationTest.php'
+            message: '/Parameter .* expects .*, mixed given/'

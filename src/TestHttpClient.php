@@ -58,7 +58,7 @@ class TestHttpClient implements ClientInterface
     }
 
     /**
-     * @throws AssertionFailedError
+     * @throws \Throwable
      */
     public function sendRequest(RequestInterface $request): ResponseInterface
     {

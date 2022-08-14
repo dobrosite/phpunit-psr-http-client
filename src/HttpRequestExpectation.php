@@ -22,6 +22,9 @@ class HttpRequestExpectation
 {
     private ?Constraint $bodyConstraint = null;
 
+    /**
+     * @var array<string, Constraint>
+     */
     private array $headersConstraints = [];
 
     private Constraint $methodConstraint;
@@ -30,6 +33,9 @@ class HttpRequestExpectation
 
     private Constraint $uriConstraint;
 
+    /**
+     * @throws \Throwable
+     */
     public function __construct(
         Constraint|string $methodConstraint,
         Constraint|string $uriConstraint
@@ -46,13 +52,15 @@ class HttpRequestExpectation
     }
 
     /**
+     * @param Constraint|array<mixed>|string $bodyConstraint
+     *
      * @throws \JsonException
      */
     public function body(Constraint|array|string $bodyConstraint): self
     {
         $this->bodyConstraint = match (true) {
             $bodyConstraint instanceof Constraint => $bodyConstraint,
-            is_array($bodyConstraint) => new JsonMatches(self::jsonEncode($bodyConstraint)),
+            \is_array($bodyConstraint) => new JsonMatches(self::jsonEncode($bodyConstraint)),
             default => new IsEqual($bodyConstraint),
         };
 
@@ -69,9 +77,14 @@ class HttpRequestExpectation
         return $this->uriConstraint;
     }
 
+    /**
+     * @param array<string, mixed> $headers
+     *
+     * @return $this
+     */
     public function headers(array $headers): self
     {
-        $this->headersConstraints = array_map(
+        $this->headersConstraints = \array_map(
             static fn($value) => $value instanceof Constraint ? $value : new IsEqual($value),
             $headers
         );
@@ -94,7 +107,7 @@ class HttpRequestExpectation
         foreach ($this->headersConstraints as $header => $constraint) {
             Assert::assertTrue(
                 $request->hasHeader($header),
-                sprintf('В запросе отсутствует заголовок "%s".', $header)
+                \sprintf('В запросе отсутствует заголовок "%s".', $header)
             );
             Assert::assertThat($request->getHeaderLine($header), $constraint);
         }
@@ -102,19 +115,23 @@ class HttpRequestExpectation
             Assert::assertThat((string) $request->getBody(), $this->bodyConstraint);
         }
 
-        return call_user_func($this->requestResult);
+        $result = \call_user_func($this->requestResult);
+        \assert($result instanceof ResponseInterface);
+
+        return $result;
     }
 
     /**
      * Задаёт возвращаемый ответ.
      *
-     * @param string|array|resource|StreamInterface|null $body Тело ответа.
+     * @param string|array<mixed>|resource|StreamInterface|null $body    Тело ответа.
+     * @param array<string, string>                             $headers Заголовки ответа.
      *
      * @throws \Throwable
      */
     public function willReturn(mixed $body, int $statusCode = 200, array $headers = []): self
     {
-        if (is_array($body)) {
+        if (\is_array($body)) {
             $body = self::jsonEncode($body);
         }
         $this->requestResult = static fn() => new Response($statusCode, $headers, $body);
@@ -136,9 +153,9 @@ class HttpRequestExpectation
      */
     private static function jsonEncode(mixed $source): string
     {
-        return json_encode(
+        return \json_encode(
             $source,
-            \JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE
+            \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_UNICODE
         );
     }
 }

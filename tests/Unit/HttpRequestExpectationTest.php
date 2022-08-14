@@ -7,8 +7,10 @@ namespace Tests\Unit;
 use DobroSite\PHPUnit\PSR18\HttpRequestExpectation;
 use Nyholm\Psr7\Request;
 use Nyholm\Psr7\Stream;
+use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\Constraint\IsEqual;
 use PHPUnit\Framework\TestCase;
+use Psr\Http\Message\StreamInterface;
 
 /**
  * @covers \DobroSite\PHPUnit\PSR18\HttpRequestExpectation
@@ -16,6 +18,8 @@ use PHPUnit\Framework\TestCase;
 final class HttpRequestExpectationTest extends TestCase
 {
     /**
+     * @return iterable<string, array<mixed>>
+     *
      * @throws \Throwable
      */
     public static function requestBodyDataProvider(): iterable
@@ -44,6 +48,8 @@ final class HttpRequestExpectationTest extends TestCase
     }
 
     /**
+     * @return iterable<string, array<mixed>>
+     *
      * @throws \Throwable
      */
     public static function responseBodyDataProvider(): iterable

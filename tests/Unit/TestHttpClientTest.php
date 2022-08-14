@@ -20,7 +20,7 @@ final class TestHttpClientTest extends TestCase
      */
     public function testSyncRequestNotMatched(): void
     {
-        $httpClient = new TestHttpClient($this);
+        $httpClient = new TestHttpClient();
         $httpClient->expectRequest('GET', 'https://example.com');
 
         $this->expectException(ExpectationFailedException::class);
@@ -34,7 +34,7 @@ final class TestHttpClientTest extends TestCase
      */
     public function testSyncRequestNotSent(): void
     {
-        $httpClient = new TestHttpClient($this);
+        $httpClient = new TestHttpClient();
         $httpClient->expectRequest('GET', 'https://example.com');
 
         $this->expectException(AssertionFailedError::class);
