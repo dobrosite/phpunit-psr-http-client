@@ -15,48 +15,72 @@
     ],
     "minimum-stability": "stable",
     "config": {
-        "sort-packages": true,
         "allow-plugins": {
-            "phpstan/extension-installer": true,
-            "infection/extension-installer": true
-        }
+            "composer-unused/composer-unused-plugin": true,
+            "composer/package-versions-deprecated": true,
+            "ergebnis/composer-normalize": true,
+            "icanhazstring/composer-unused": true,
+            "infection/extension-installer": true,
+            "phpstan/extension-installer": true
+        },
+        "sort-packages": true
     },
     "scripts": {
-        "infection": "vendor/bin/infection -j$(nproc)",
-        "phpcs": "vendor/bin/phpcs",
-        "phpstan": "vendor/bin/phpstan analyze",
-        "phpunit": "vendor/bin/phpunit",
-        "tests": [
+        "analyze": [
             "@phpunit",
             "@phpstan",
+            "@rector",
             "@infection",
-            "@phpcs"
+            "@code-style"
+        ],
+        "auto-fix": [
+            "@rector-fix",
+            "@code-style-fix",
+            "@phpunit"
+        ],
+        "code-style": [
+            "vendor/bin/ecs check src tests"
+        ],
+        "code-style-fix": [
+            "vendor/bin/ecs check src tests --fix"
+        ],
+        "infection": "vendor/bin/infection -j$(nproc)",
+        "phpstan": "vendor/bin/phpstan analyze",
+        "phpunit": "vendor/bin/phpunit",
+        "rector": [
+            "vendor/bin/rector process --dry-run"
+        ],
+        "rector-fix": [
+            "vendor/bin/rector process"
         ]
-    },
-    "conflict": {
-        "phpunit/phpunit": ">=9.5.17"
     },
     "require": {
         "php": "^8.0",
         "nyholm/psr7": "^1.0",
-        "phpunit/phpunit": "^9.0",
+        "phpunit/phpunit": "^9.0,<9.5.17",
         "psr/http-client": "^1.0"
+    },
+    "require-dev": {
+        "composer/package-versions-deprecated": "^1.11",
+        "ergebnis/composer-normalize": "^2.28",
+        "icanhazstring/composer-unused": "^0.8.2",
+        "infection/infection": "^0.26.0",
+        "phpstan/extension-installer": "^1.1",
+        "phpstan/phpstan": "^1.0",
+        "phpstan/phpstan-phpunit": "^1.0",
+        "rector/rector": "^0.13.10",
+        "roave/security-advisories": "dev-latest",
+        "squizlabs/php_codesniffer": "^3.7",
+        "symplify/easy-coding-standard": "^11.1"
     },
     "autoload": {
         "psr-4": {
             "DobroSite\\PHPUnit\\PSR18\\": "src/"
         }
     },
-    "require-dev": {
-        "infection/infection": "0.26.5",
-        "phpstan/extension-installer": "^1.1",
-        "phpstan/phpstan": "^1.0",
-        "phpstan/phpstan-phpunit": "^1.0",
-        "squizlabs/php_codesniffer": "^3.7"
-    },
     "autoload-dev": {
         "psr-4": {
-            "Tests\\": "tests/"
+            "Tests\\": "tests"
         }
     }
 }
