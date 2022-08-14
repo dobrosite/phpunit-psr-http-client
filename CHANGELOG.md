@@ -6,3 +6,7 @@
 
 ## Не выпущено
 
+### Добавлено
+
+- Класс `TestHttpClient`.
+- Примесь `TestHttpClientTrait`.
