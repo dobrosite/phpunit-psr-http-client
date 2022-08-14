@@ -96,7 +96,7 @@ final class SomeTest extends WebTestCase
 Предположим, у вас есть класс `Foo`, обращающийся к стороннему API `https://example.com/api`. Для
 этого класс пользуется клиентом HTTP, совместимым с PSR-18:
 
-```injectablephp
+```php
 use Psr\Http\Client\ClientInterface;
 
 class Foo 
