@@ -38,7 +38,7 @@ $this->getHttpClient()
 
 ## Установка
 
-    composer require dobrosite/phpunit-psr-http-client
+    composer require --dev dobrosite/phpunit-psr-http-client
 
 ## Подключение
 
