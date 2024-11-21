@@ -7,10 +7,8 @@ namespace Tests\Unit;
 use DobroSite\PHPUnit\PSR18\HttpRequestExpectation;
 use Nyholm\Psr7\Request;
 use Nyholm\Psr7\Stream;
-use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\Constraint\IsEqual;
 use PHPUnit\Framework\TestCase;
-use Psr\Http\Message\StreamInterface;
 
 /**
  * @covers \DobroSite\PHPUnit\PSR18\HttpRequestExpectation
@@ -18,6 +16,8 @@ use Psr\Http\Message\StreamInterface;
 final class HttpRequestExpectationTest extends TestCase
 {
     /**
+     * Поставщик данных для {@see testDifferentRequestBodyTypes}.
+     *
      * @return iterable<string, array<mixed>>
      *
      * @throws \Throwable
@@ -33,21 +33,23 @@ final class HttpRequestExpectationTest extends TestCase
 
         return [
             'Строка' => [
-                'expectation' => 'Строка',
-                'requestBody' => 'Строка',
+                'requestBodyExpectation' => 'Строка',
+                'receivedRequestBody' => 'Строка',
             ],
             'Constraint' => [
-                'expectation' => new IsEqual('Строка'),
-                'requestBody' => 'Строка',
+                'requestBodyExpectation' => new IsEqual('Строка'),
+                'receivedRequestBody' => 'Строка',
             ],
             'Массив' => [
-                'expectation' => ['foo' => 'bar'],
-                'requestBody' => '{"foo": "bar"}',
+                'requestBodyExpectation' => ['foo' => 'bar'],
+                'receivedRequestBody' => '{"foo": "bar"}',
             ],
         ];
     }
 
     /**
+     * Поставщик данных для {@see testDifferentResponseBodyTypes}
+     *
      * @return iterable<string, array<mixed>>
      *
      * @throws \Throwable
@@ -63,23 +65,23 @@ final class HttpRequestExpectationTest extends TestCase
 
         return [
             'Строка' => [
-                'returnBody' => 'Строка',
+                'responseBodyToReturn' => 'Строка',
                 'expectedBody' => 'Строка',
             ],
             'Ресурс' => [
-                'returnBody' => $resource,
+                'responseBodyToReturn' => $resource,
                 'expectedBody' => 'Ресурс',
             ],
             'Stream' => [
-                'returnBody' => Stream::create('Stream'),
+                'responseBodyToReturn' => Stream::create('Stream'),
                 'expectedBody' => 'Stream',
             ],
             'null' => [
-                'returnBody' => null,
+                'responseBodyToReturn' => null,
                 'expectedBody' => '',
             ],
             'Массив' => [
-                'returnBody' => ['foo' => 'bar'],
+                'responseBodyToReturn' => ['foo' => 'bar'],
                 'expectedBody' => '{"foo":"bar"}',
             ],
         ];

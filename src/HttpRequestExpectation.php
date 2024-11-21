@@ -60,7 +60,7 @@ class HttpRequestExpectation
     {
         $this->bodyConstraint = match (true) {
             $bodyConstraint instanceof Constraint => $bodyConstraint,
-            \is_array($bodyConstraint) => new JsonMatches(self::jsonEncode($bodyConstraint)),
+            \is_array($bodyConstraint) => new JsonMatches($this->jsonEncode($bodyConstraint)),
             default => new IsEqual($bodyConstraint),
         };
 
@@ -132,7 +132,7 @@ class HttpRequestExpectation
     public function willReturn(mixed $body, int $statusCode = 200, array $headers = []): self
     {
         if (\is_array($body)) {
-            $body = self::jsonEncode($body);
+            $body = $this->jsonEncode($body);
         }
         $this->requestResult = static fn() => new Response($statusCode, $headers, $body);
 
@@ -151,7 +151,7 @@ class HttpRequestExpectation
     /**
      * @throws \JsonException
      */
-    private static function jsonEncode(mixed $source): string
+    private function jsonEncode(mixed $source): string
     {
         return \json_encode(
             $source,

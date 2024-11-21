@@ -26,32 +26,31 @@
         "sort-packages": true
     },
     "scripts": {
-        "analyze": [
-            "@phpunit",
-            "@phpstan",
-            "@rector",
-            "@infection",
-            "@code-style"
+        "code:analyze": [
+            "@code:tests",
+            "@code:analyze:static",
+            "@code:refactoring:check",
+            "@code:style:check",
+            "@code:analyze:tests"
         ],
-        "auto-fix": [
-            "@rector-fix",
-            "@code-style-fix",
-            "@phpunit"
+        "code:fix": [
+            "@code:refactoring:apply",
+            "@code:style:fix"
         ],
-        "code-style": [
+        "code:style:check": [
             "vendor/bin/ecs check src tests"
         ],
-        "code-style-fix": [
+        "code:style:fix": [
             "vendor/bin/ecs check src tests --fix"
         ],
-        "infection": "vendor/bin/infection -j$(nproc)",
-        "phpstan": "vendor/bin/phpstan analyze",
-        "phpunit": "vendor/bin/phpunit",
-        "rector": [
-            "vendor/bin/rector process --dry-run"
-        ],
-        "rector-fix": [
+        "code:analyze:tests": "vendor/bin/infection --initial-tests-php-options='-d zend_extension=xdebug.so -d xdebug.mode=coverage' -j$(nproc)",
+        "code:analyze:static": "vendor/bin/phpstan analyze",
+        "code:tests": "vendor/bin/phpunit",
+        "code:refactoring:apply": [
             "vendor/bin/rector process"
+        ],
+        "code:refactoring:check": [
+            "vendor/bin/rector process --dry-run"
         ]
     },
     "require": {
@@ -63,15 +62,14 @@
     "require-dev": {
         "composer/package-versions-deprecated": "^1.11",
         "ergebnis/composer-normalize": "^2.28",
-        "icanhazstring/composer-unused": "^0.8.2",
-        "infection/infection": "^0.26.0",
+        "infection/infection": "^0.29",
         "phpstan/extension-installer": "^1.1",
-        "phpstan/phpstan": "^1.0",
-        "phpstan/phpstan-phpunit": "^1.0",
-        "rector/rector": "^0.13.10",
+        "phpstan/phpstan": "^1.12.11",
+        "phpstan/phpstan-phpunit": "^1.4.1",
+        "rector/rector": "^1.0",
         "roave/security-advisories": "dev-latest",
         "squizlabs/php_codesniffer": "^3.7",
-        "symplify/easy-coding-standard": "^11.1"
+        "symplify/easy-coding-standard": "^12.0"
     },
     "autoload": {
         "psr-4": {

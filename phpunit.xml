@@ -5,29 +5,25 @@
          bootstrap="vendor/autoload.php"
          cacheResult="false"
          colors="true"
-         verbose="true"
+         executionOrder="random"
+         resolveDependencies="true"
 >
 
     <testsuites>
 
-        <testsuite name="All">
-            <directory>tests</directory>
-        </testsuite>
-
-        <testsuite name="Unit">
+        <testsuite name="unit">
             <directory>tests/Unit</directory>
         </testsuite>
 
-<!--        <testsuite name="Integration">-->
-<!--            <directory>tests/Integration</directory>-->
-<!--        </testsuite>-->
-
     </testsuites>
 
-    <coverage>
+    <source>
         <include>
             <directory>src</directory>
         </include>
+    </source>
+
+    <coverage pathCoverage="true">
     </coverage>
 
 </phpunit>
