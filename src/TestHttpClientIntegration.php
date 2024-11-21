@@ -9,7 +9,7 @@ use PHPUnit\Framework\AssertionFailedError;
 /**
  * Интеграция {@see TestHttpClient} в тесты PHPUnit
  *
- * @since x.x
+ * @since 1.1
  */
 trait TestHttpClientIntegration
 {
