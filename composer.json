@@ -1,19 +1,47 @@
 {
     "name": "dobrosite/phpunit-psr-http-client",
     "description": "Инструменты для тестирования кода, использующего PSR-18",
+    "license": "MIT",
     "type": "library",
     "keywords": [
         "PHPUnit",
         "PSR-18"
     ],
-    "license": "MIT",
     "authors": [
         {
             "name": "Михаил Красильников",
             "email": "m.krasilnikov@yandex.ru"
         }
     ],
+    "require": {
+        "php": "^8.0",
+        "nyholm/psr7": "^1.0",
+        "phpunit/phpunit": "^9.0 || ^10.0 || ^11.0",
+        "psr/http-client": "^1.0"
+    },
+    "require-dev": {
+        "composer/package-versions-deprecated": "^1.11",
+        "ergebnis/composer-normalize": "^2.28",
+        "infection/infection": ">=0.26,<0.30",
+        "phpstan/extension-installer": "^1.1",
+        "phpstan/phpstan": "^1.12.11",
+        "phpstan/phpstan-phpunit": "^1.4.1",
+        "rector/rector": "^1.0",
+        "roave/security-advisories": "dev-latest",
+        "squizlabs/php_codesniffer": "^3.7",
+        "symplify/easy-coding-standard": "^12.0"
+    },
     "minimum-stability": "stable",
+    "autoload": {
+        "psr-4": {
+            "DobroSite\\PHPUnit\\PSR18\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests"
+        }
+    },
     "config": {
         "allow-plugins": {
             "composer-unused/composer-unused-plugin": true,
@@ -33,9 +61,17 @@
             "@code:style:check",
             "@code:analyze:tests"
         ],
+        "code:analyze:static": "vendor/bin/phpstan analyze",
+        "code:analyze:tests": "vendor/bin/infection --initial-tests-php-options='-d zend_extension=xdebug.so -d xdebug.mode=coverage' -j$(nproc)",
         "code:fix": [
             "@code:refactoring:apply",
             "@code:style:fix"
+        ],
+        "code:refactoring:apply": [
+            "vendor/bin/rector process"
+        ],
+        "code:refactoring:check": [
+            "vendor/bin/rector process --dry-run"
         ],
         "code:style:check": [
             "vendor/bin/ecs check src tests"
@@ -43,42 +79,6 @@
         "code:style:fix": [
             "vendor/bin/ecs check src tests --fix"
         ],
-        "code:analyze:tests": "vendor/bin/infection --initial-tests-php-options='-d zend_extension=xdebug.so -d xdebug.mode=coverage' -j$(nproc)",
-        "code:analyze:static": "vendor/bin/phpstan analyze",
-        "code:tests": "vendor/bin/phpunit",
-        "code:refactoring:apply": [
-            "vendor/bin/rector process"
-        ],
-        "code:refactoring:check": [
-            "vendor/bin/rector process --dry-run"
-        ]
-    },
-    "require": {
-        "php": "^8.0",
-        "nyholm/psr7": "^1.0",
-        "phpunit/phpunit": "^9.0 || ^10.0 || ^11.0",
-        "psr/http-client": "^1.0"
-    },
-    "require-dev": {
-        "composer/package-versions-deprecated": "^1.11",
-        "ergebnis/composer-normalize": "^2.28",
-        "infection/infection": "^0.29",
-        "phpstan/extension-installer": "^1.1",
-        "phpstan/phpstan": "^1.12.11",
-        "phpstan/phpstan-phpunit": "^1.4.1",
-        "rector/rector": "^1.0",
-        "roave/security-advisories": "dev-latest",
-        "squizlabs/php_codesniffer": "^3.7",
-        "symplify/easy-coding-standard": "^12.0"
-    },
-    "autoload": {
-        "psr-4": {
-            "DobroSite\\PHPUnit\\PSR18\\": "src/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Tests\\": "tests"
-        }
+        "code:tests": "vendor/bin/phpunit"
     }
 }
