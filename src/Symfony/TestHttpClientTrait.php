@@ -21,7 +21,7 @@ trait TestHttpClientTrait
     protected function getHttpClient(): TestHttpClient
     {
         $client = self::getContainer()->get(ClientInterface::class);
-        assert($client instanceof ClientInterface);
+        \assert($client instanceof ClientInterface);
 
         return $client;
     }

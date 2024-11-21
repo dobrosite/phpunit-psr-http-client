@@ -44,4 +44,17 @@ final class TestHttpClientTest extends TestCase
 
         $httpClient->assertAllRequestsSent();
     }
+
+    /**
+     * @throws \Throwable
+     */
+    public function testUnexpectedSyncRequest(): void
+    {
+        $httpClient = new TestHttpClient();
+
+        $this->expectException(AssertionFailedError::class);
+        $this->expectExceptionMessage('Неожиданный синхронный запрос "GET /".');
+
+        $httpClient->sendRequest(new Request('GET', '/'));
+    }
 }

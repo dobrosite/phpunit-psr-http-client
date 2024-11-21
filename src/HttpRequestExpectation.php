@@ -14,9 +14,9 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 
 /**
- * Ожидание запроса HTTP.
+ * Ожидания от запроса HTTP
  *
- * @since x.x
+ * @since 1.0
  */
 class HttpRequestExpectation
 {

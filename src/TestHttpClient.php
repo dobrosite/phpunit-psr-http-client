@@ -11,9 +11,9 @@ use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
 /**
- * Клиент HTTP для использования в тестах.
+ * Клиент HTTP для использования в тестах
  *
- * @since x.x
+ * @since 1.0
  */
 class TestHttpClient implements ClientInterface
 {
@@ -23,6 +23,13 @@ class TestHttpClient implements ClientInterface
     private array $syncExpectations = [];
 
     /**
+     * Убеждается, что все ожидаемые запросы действительно были сделаны
+     *
+     * Этот метод должен вызываться после каждого теста, в котором задавались ожидания запросов по
+     * HTTP. Это можно сделать следующими способами.
+     *
+     *
+     *
      * @throws AssertionFailedError
      */
     public function assertAllRequestsSent(): void
@@ -47,6 +54,9 @@ class TestHttpClient implements ClientInterface
         }
     }
 
+    /**
+     * @throws \Throwable
+     */
     public function expectRequest(
         Constraint|string $method,
         Constraint|string $uri
