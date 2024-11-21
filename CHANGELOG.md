@@ -6,6 +6,11 @@
 
 ## Новое
 
+### Изменено
+
+Теперь `Symfony\TestHttpClientTrait` автоматически вызывает
+`TestHttpClient::assertAllRequestsSent()` после каждого теста.
+
 ### Добавлено
 
 - Добавлена примесь `TestHttpClientIntegration`.
