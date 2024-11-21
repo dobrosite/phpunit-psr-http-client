@@ -7,12 +7,11 @@ namespace Tests\Unit;
 use DobroSite\PHPUnit\PSR18\TestHttpClient;
 use Nyholm\Psr7\Request;
 use PHPUnit\Framework\AssertionFailedError;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \DobroSite\PHPUnit\PSR18\TestHttpClient
- */
+#[CoversClass(TestHttpClient::class)]
 final class TestHttpClientTest extends TestCase
 {
     /**

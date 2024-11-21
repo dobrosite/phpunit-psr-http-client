@@ -7,12 +7,12 @@ namespace Tests\Unit;
 use DobroSite\PHPUnit\PSR18\HttpRequestExpectation;
 use Nyholm\Psr7\Request;
 use Nyholm\Psr7\Stream;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Constraint\IsEqual;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \DobroSite\PHPUnit\PSR18\HttpRequestExpectation
- */
+#[CoversClass(HttpRequestExpectation::class)]
 final class HttpRequestExpectationTest extends TestCase
 {
     /**
@@ -89,9 +89,8 @@ final class HttpRequestExpectationTest extends TestCase
 
     /**
      * @throws \Throwable
-     *
-     * @dataProvider requestBodyDataProvider
      */
+    #[DataProvider('requestBodyDataProvider')]
     public function testDifferentRequestBodyTypes(
         mixed $requestBodyExpectation,
         mixed $receivedRequestBody
@@ -104,9 +103,8 @@ final class HttpRequestExpectationTest extends TestCase
 
     /**
      * @throws \Throwable
-     *
-     * @dataProvider responseBodyDataProvider
      */
+    #[DataProvider('responseBodyDataProvider')]
     public function testDifferentResponseBodyTypes(
         mixed $responseBodyToReturn,
         string $expectedBody

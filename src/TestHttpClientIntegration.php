@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace DobroSite\PHPUnit\PSR18;
 
 use PHPUnit\Framework\AssertionFailedError;
+use PHPUnit\Framework\Attributes\After;
 
 /**
  * Интеграция {@see TestHttpClient} в тесты PHPUnit
@@ -17,9 +18,8 @@ trait TestHttpClientIntegration
 
     /**
      * @throws AssertionFailedError
-     *
-     * @after
      */
+    #[After]
     public function assertAllExpectedHttpRequestsSent(): void
     {
         $this->getHttpClient()->assertAllRequestsSent();

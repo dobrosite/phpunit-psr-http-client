@@ -6,6 +6,7 @@ namespace DobroSite\PHPUnit\PSR18\Symfony;
 
 use DobroSite\PHPUnit\PSR18\TestHttpClient;
 use PHPUnit\Framework\AssertionFailedError;
+use PHPUnit\Framework\Attributes\After;
 use Psr\Http\Client\ClientInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceException;
@@ -17,9 +18,8 @@ trait TestHttpClientTrait
      * @throws AssertionFailedError
      * @throws ServiceCircularReferenceException
      * @throws ServiceNotFoundException
-     *
-     * @after
      */
+    #[After]
     public function assertAllExpectedHttpRequestsSent(): void
     {
         $this->getHttpClient()->assertAllRequestsSent();
